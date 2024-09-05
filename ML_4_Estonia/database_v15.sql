@@ -45,6 +45,29 @@ COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types an
 
 
 --
+-- Name: get_triggers(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.get_triggers() RETURNS TABLE(table_name text, trigger_name text)
+    LANGUAGE plpgsql
+    AS $$
+begin
+	return query select 
+	  trg.event_object_table::text AS table_name, 
+	  trg.trigger_name::text
+	from 
+	  information_schema.triggers trg
+	group by 
+	  table_name, 
+	  trg.trigger_name
+	order by
+	  table_name, 
+	  trg.trigger_name;
+end;
+$$;
+
+
+--
 -- Name: insert_default_administrative_source(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -87,6 +110,66 @@ CREATE FUNCTION public.set_la_source_id() RETURNS trigger
     AS $$
 BEGIN
     NEW.la_source_id := nextval('la_source_id_seq');
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: set_no_name_for_county_unit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.set_no_name_for_county_unit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.name = 'NONAME' THEN
+        SELECT name INTO NEW.name
+        FROM est_county_plan
+        WHERE plan_id = NEW.plan_id
+        ORDER BY county_plan_id DESC
+        LIMIT 1;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: set_no_name_for_master_unit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.set_no_name_for_master_unit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.name = 'NONAME' THEN
+        SELECT name INTO NEW.name
+        FROM est_master_plan
+        WHERE plan_id = NEW.plan_id
+        ORDER BY master_plan_id DESC
+        LIMIT 1;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: set_no_name_for_national_unit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.set_no_name_for_national_unit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.name = 'NONAME' THEN
+        SELECT name INTO NEW.name
+        FROM est_national_plan
+        WHERE plan_id = NEW.plan_id
+        ORDER BY national_plan_id DESC
+        LIMIT 1;
+    END IF;
     RETURN NEW;
 END;
 $$;
@@ -155,6 +238,144 @@ $$;
 
 
 --
+-- Name: set_noname_county(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.set_noname_county() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    existing_name TEXT;
+BEGIN
+    IF NEW.name = 'NONAME' THEN
+        BEGIN
+            SELECT name INTO existing_name
+            FROM est_county_plan
+            WHERE plan_id = NEW.plan_id
+            ORDER BY county_plan_id DESC
+            LIMIT 1;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                existing_name := NULL;
+        END;
+
+        IF existing_name IS NOT NULL THEN
+            NEW.name := existing_name;
+        ELSE
+            NEW.name := 'NoName' || nextval('noname_seq');
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: set_noname_master(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.set_noname_master() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    existing_name TEXT;
+BEGIN
+    IF NEW.name = 'NONAME' THEN
+        BEGIN
+            SELECT name INTO existing_name
+            FROM est_master_plan
+            WHERE plan_id = NEW.plan_id
+            ORDER BY master_plan_id DESC
+            LIMIT 1;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                existing_name := NULL;
+        END;
+
+        IF existing_name IS NOT NULL THEN
+            NEW.name := existing_name;
+        ELSE
+            NEW.name := 'NoName' || nextval('noname_seq');
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: set_noname_national(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.set_noname_national() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    existing_name TEXT;
+BEGIN
+    IF NEW.name = 'NONAME' THEN
+        BEGIN
+            SELECT name INTO existing_name
+            FROM est_national_plan
+            WHERE plan_id = NEW.plan_id
+            ORDER BY national_plan_id DESC
+            LIMIT 1;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                existing_name := NULL;
+        END;
+
+        IF existing_name IS NOT NULL THEN
+            NEW.name := existing_name;
+        ELSE
+            NEW.name := 'NoName' || nextval('noname_seq');
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: update_c_plan_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_c_plan_beginlifespanlastversion() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE est_county_plan
+    SET begin_lifespan_lastversion = NEW.begin_lifespan_version
+    WHERE plan_id = NEW.plan_id
+      AND begin_lifespan_version < NEW.begin_lifespan_version;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: update_c_unit_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_c_unit_beginlifespanlastversion() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE est_county_unit
+    SET begin_lifespan_lastversion = NEW.begin_lifespan_version
+    WHERE plan_id = NEW.plan_id
+      AND begin_lifespan_version < NEW.begin_lifespan_version;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
 -- Name: update_d_plan_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -183,6 +404,78 @@ CREATE FUNCTION public.update_d_unit_beginlifespanlastversion() RETURNS trigger
 BEGIN
     -- Update the begin_lifespan_lastversion for all related records if the new begin_lifespan_version is greater
     UPDATE est_detailed_unit
+    SET begin_lifespan_lastversion = NEW.begin_lifespan_version
+    WHERE plan_id = NEW.plan_id
+      AND begin_lifespan_version < NEW.begin_lifespan_version;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: update_m_plan_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_m_plan_beginlifespanlastversion() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE est_master_plan
+    SET begin_lifespan_lastversion = NEW.begin_lifespan_version
+    WHERE plan_id = NEW.plan_id
+      AND begin_lifespan_version < NEW.begin_lifespan_version;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: update_m_unit_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_m_unit_beginlifespanlastversion() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE est_master_unit
+    SET begin_lifespan_lastversion = NEW.begin_lifespan_version
+    WHERE plan_id = NEW.plan_id
+      AND begin_lifespan_version < NEW.begin_lifespan_version;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: update_n_plan_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_n_plan_beginlifespanlastversion() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE est_national_plan
+    SET begin_lifespan_lastversion = NEW.begin_lifespan_version
+    WHERE plan_id = NEW.plan_id
+      AND begin_lifespan_version < NEW.begin_lifespan_version;
+
+    RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: update_n_unit_beginlifespanlastversion(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_n_unit_beginlifespanlastversion() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE est_national_unit
     SET begin_lifespan_lastversion = NEW.begin_lifespan_version
     WHERE plan_id = NEW.plan_id
       AND begin_lifespan_version < NEW.begin_lifespan_version;
@@ -343,6 +636,18 @@ CREATE SEQUENCE public.est_county_plan_county_plan_id_seq
 --
 
 ALTER SEQUENCE public.est_county_plan_county_plan_id_seq OWNED BY public.est_county_plan.county_plan_id;
+
+
+--
+-- Name: est_county_plan_unit_count; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.est_county_plan_unit_count AS
+SELECT
+    NULL::integer AS plan_id,
+    NULL::text AS plan_name,
+    NULL::date AS initiated_date,
+    NULL::bigint AS unit_count;
 
 
 --
@@ -590,6 +895,18 @@ ALTER SEQUENCE public.est_master_plan_master_plan_id_seq OWNED BY public.est_mas
 
 
 --
+-- Name: est_master_plan_unit_count; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.est_master_plan_unit_count AS
+SELECT
+    NULL::integer AS plan_id,
+    NULL::text AS plan_name,
+    NULL::date AS initiated_date,
+    NULL::bigint AS unit_count;
+
+
+--
 -- Name: est_master_unit; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -662,6 +979,18 @@ CREATE SEQUENCE public.est_national_plan_national_plan_id_seq
 --
 
 ALTER SEQUENCE public.est_national_plan_national_plan_id_seq OWNED BY public.est_national_plan.national_plan_id;
+
+
+--
+-- Name: est_national_plan_unit_count; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.est_national_plan_unit_count AS
+SELECT
+    NULL::integer AS plan_id,
+    NULL::text AS plan_name,
+    NULL::date AS initiated_date,
+    NULL::bigint AS unit_count;
 
 
 --
@@ -1422,7 +1751,7 @@ COPY public.ci_rolecode (id, name) FROM stdin;
 7	distributor
 8	originator
 9	pointOfContact
-10	principalInvestigator
+10	principalinvestigator
 11	processor
 12	publisher
 13	author
@@ -1491,9 +1820,9 @@ COPY public.est_detailed_unit (geometry, detailed_plan_unit_id, detailed_plan_id
 --
 
 COPY public.est_greennetworktype (id, type) FROM stdin;
-1	Corridor
-2	CoreArea
-3	ConflictArea
+1	Corridor [Koridor]
+2	CoreArea [Tugiala]
+3	ConflictArea [Konfliktiala]
 \.
 
 
@@ -1534,10 +1863,10 @@ COPY public.est_national_unit (geometry, national_plan_unit_id, plan_unit_group_
 --
 
 COPY public.est_transportinfrastructuretype (id, type) FROM stdin;
-1	Roads
-2	Railways
-3	PedestrianPaths
-4	CyclingPaths
+1	Roads [Teed]
+2	Railways [Raudteed]
+3	PedestrianPaths [Jalakäijate teed]
+4	CyclingPaths [Jalgrattateed]
 \.
 
 
@@ -1554,13 +1883,14 @@ COPY public.la_administrativesource (administrative_id, text, la_source_id) FROM
 --
 
 COPY public.la_mediatype (id, type) FROM stdin;
-1	video
-2	sketch
-3	pointCloud
-4	image
-5	scannedMap
-6	digitizedMap
-7	DB
+1	jpeg
+2	png
+3	tiff
+4	emf
+5	wmf
+6	adf
+7	docx
+8	pdf
 \.
 
 
@@ -1569,11 +1899,13 @@ COPY public.la_mediatype (id, type) FROM stdin;
 --
 
 COPY public.la_multimediatype (id, type) FROM stdin;
-1	jpeg
-2	png
-3	tiff
-4	emf
-5	wmf
+1	video
+2	sketch
+3	pointCloud
+4	image
+5	scannedMap
+6	digitizedMap
+7	DB
 \.
 
 
@@ -1622,9 +1954,9 @@ COPY public.la_spatialsourcetype (id, type) FROM stdin;
 --
 
 COPY public.la_surfacerelationtype (id, type) FROM stdin;
-1	mixed
-2	below
-3	above
+1	mixed [Segatüüp]
+2	below [Maa-alune]
+3	above [Maapealne]
 4	onSurface
 \.
 
@@ -1785,7 +2117,7 @@ SELECT pg_catalog.setval('public.ci_responsibility_id_seq', 1, false);
 -- Name: ci_rolecode_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.ci_rolecode_id_seq', 22, true);
+SELECT pg_catalog.setval('public.ci_rolecode_id_seq', 1, false);
 
 
 --
@@ -2247,6 +2579,21 @@ CREATE INDEX idx_la_source_id ON public.la_source USING btree (la_source_id);
 
 
 --
+-- Name: est_county_plan_unit_count _RETURN; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE VIEW public.est_county_plan_unit_count AS
+ SELECT p.county_plan_id AS plan_id,
+    p.name AS plan_name,
+    p.initiated_date,
+    count(u.county_plan_unit_id) AS unit_count
+   FROM (public.est_county_plan p
+     LEFT JOIN public.est_county_unit u ON ((p.county_plan_id = u.county_plan_id)))
+  GROUP BY p.county_plan_id, p.name
+  ORDER BY p.county_plan_id;
+
+
+--
 -- Name: est_detailed_plan_unit_count _RETURN; Type: RULE; Schema: public; Owner: -
 --
 
@@ -2259,6 +2606,36 @@ CREATE OR REPLACE VIEW public.est_detailed_plan_unit_count AS
      LEFT JOIN public.est_detailed_unit u ON (((p.detailed_plan_id)::text = (u.detailed_plan_id)::text)))
   GROUP BY p.detailed_plan_id, p.name
   ORDER BY p.detailed_plan_id;
+
+
+--
+-- Name: est_master_plan_unit_count _RETURN; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE VIEW public.est_master_plan_unit_count AS
+ SELECT p.master_plan_id AS plan_id,
+    p.name AS plan_name,
+    p.initiated_date,
+    count(u.master_plan_unit_id) AS unit_count
+   FROM (public.est_master_plan p
+     LEFT JOIN public.est_master_unit u ON ((p.master_plan_id = u.master_plan_id)))
+  GROUP BY p.master_plan_id, p.name
+  ORDER BY p.master_plan_id;
+
+
+--
+-- Name: est_national_plan_unit_count _RETURN; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE VIEW public.est_national_plan_unit_count AS
+ SELECT p.national_plan_id AS plan_id,
+    p.description AS plan_name,
+    p.initiated_date,
+    count(u.national_plan_unit_id) AS unit_count
+   FROM (public.est_national_plan p
+     LEFT JOIN public.est_national_unit u ON ((p.national_plan_id = u.national_plan_id)))
+  GROUP BY p.national_plan_id, p.description
+  ORDER BY p.national_plan_id;
 
 
 --
@@ -2575,6 +2952,13 @@ GRANT ALL ON TABLE public.est_county_plan TO PUBLIC;
 
 
 --
+-- Name: TABLE est_county_plan_unit_count; Type: ACL; Schema: public; Owner: -
+--
+
+GRANT ALL ON TABLE public.est_county_plan_unit_count TO PUBLIC;
+
+
+--
 -- Name: TABLE est_county_unit; Type: ACL; Schema: public; Owner: -
 --
 
@@ -2624,6 +3008,13 @@ GRANT ALL ON TABLE public.est_master_plan TO PUBLIC;
 
 
 --
+-- Name: TABLE est_master_plan_unit_count; Type: ACL; Schema: public; Owner: -
+--
+
+GRANT ALL ON TABLE public.est_master_plan_unit_count TO PUBLIC;
+
+
+--
 -- Name: TABLE est_master_unit; Type: ACL; Schema: public; Owner: -
 --
 
@@ -2635,6 +3026,13 @@ GRANT ALL ON TABLE public.est_master_unit TO PUBLIC;
 --
 
 GRANT ALL ON TABLE public.est_national_plan TO PUBLIC;
+
+
+--
+-- Name: TABLE est_national_plan_unit_count; Type: ACL; Schema: public; Owner: -
+--
+
+GRANT ALL ON TABLE public.est_national_plan_unit_count TO PUBLIC;
 
 
 --
