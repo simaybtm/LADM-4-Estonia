@@ -1,0 +1,11 @@
+extract_data.fmw.recover
+fme_log.txt
+extract_data.log
+synthetic_model.pkl
+test.fmw.recover
+test.log
+test.fmw
+synthetic_model.pkl
+output.csv
+extended_synthetic_layer_mapping.csv
+__pycache__

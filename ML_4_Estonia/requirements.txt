@@ -1,0 +1,6 @@
+pandas
+sqlalchemy
+sqlalchemy-utils
+psycopg2-binary
+scikit-learn
+joblib
