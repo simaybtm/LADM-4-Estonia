@@ -9,6 +9,6 @@ Unless otherwise stated, all content in this repository is licensed under a [Cre
 
 
 ## Contact Information
-- **LinkedIn** https://www.linkedin.com/in/simaybatum/ 
 - **Email:** s.batum@student.tudelft.nl
 - **Email:** simay@futureinsight.nl
+- **LinkedIn** https://www.linkedin.com/in/simaybatum/ 
