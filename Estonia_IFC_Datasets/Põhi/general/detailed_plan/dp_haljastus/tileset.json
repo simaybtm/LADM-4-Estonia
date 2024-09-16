@@ -1,0 +1,29 @@
+
+const express = require('express');
+const { Pool } = require('pg');
+const app = express();
+const port = 3000;
+
+const pool = new Pool({
+  user: 'your_db_user',
+  host: 'localhost',
+  database: 'LADM_Thesis',
+  password: 'your_db_password',
+  port: 5432,
+});
+
+app.get('/data', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM your_table');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving data');
+  }
+});
+
+app.use(express.static('public'));
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
+});

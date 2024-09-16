@@ -1,0 +1,127 @@
+{
+	"asset" : {
+		"version" : "1.0"
+	},
+	"properties" : {
+		"detailed_plan_unit_id" : {
+			"minimum" : 40,
+			"maximum" : 51
+		},
+		"detailed_plan_id" : {},
+		"source_id" : {},
+		"name" : {},
+		"description" : {},
+		"maximum_depth" : {},
+		"construction_type" : {},
+		"feature_protected" : {},
+		"max_area_indications" : {},
+		"max_height_indications" : {
+			"minimum" : 24,
+			"maximum" : 24
+		},
+		"max_volume_indications" : {},
+		"other_construction_indications" : {},
+		"other_indications" : {},
+		"status_type" : {},
+		"sub_function_name" : {},
+		"sub_function_type" : {},
+		"surface_relation" : {
+			"minimum" : 1,
+			"maximum" : 1
+		},
+		"type_of_building_indications" : {},
+		"type_of_shape_indications" : {},
+		"unit_indications" : {},
+		"begin_lifespan_version" : {},
+		"begin_real_world_lifespan_version" : {},
+		"end_lifespan_version" : {},
+		"begin_lifespan_lastversion" : {},
+		"initiated_date" : {
+			"minimum" : 2019,
+			"maximum" : 2019
+		},
+		"current_area" : {
+			"minimum" : 877,
+			"maximum" : 3825
+		},
+		"current_volume" : {
+			"minimum" : 19298,
+			"maximum" : 74398
+		},
+		"discipline" : {},
+		"global_id" : {},
+		"_clipped" : {}
+	},
+	"geometricError" : 98.39989057946615,
+	"root" : {
+		"boundingVolume" : {
+			"region" : [ 0.43208644283811876, 1.0374985135336625, 0.43215860120610805, 1.0375640593228908, 1.999631707549517, 23.99963170754952 ]
+		},
+		"geometricError" : 98.39989057946615,
+		"refine" : "REPLACE",
+		"content" : {
+			"boundingVolume" : {
+				"region" : [ 0.43208644283811876, 1.0374985135336625, 0.43215860120610805, 1.0375640593228908, 1.999631707549517, 23.99963170754952 ]
+			},
+			"uri" : "data/data4.b3dm"
+		},
+		"children" : [
+			{
+				"boundingVolume" : {
+					"region" : [ 0.4321136244607954, 1.0375312864282766, 0.43215860120610805, 1.0375640593228908, 1.999631707549517, 23.99963170754952 ]
+				},
+				"geometricError" : 0,
+				"refine" : "REPLACE",
+				"content" : {
+					"boundingVolume" : {
+						"region" : [ 0.4321136244607954, 1.0375329674082987, 0.43215860120610805, 1.0375640593228908, 1.999631707549517, 23.99963170754952 ]
+					},
+					"uri" : "data/data0.b3dm"
+				},
+				"children" : []
+			},
+			{
+				"boundingVolume" : {
+					"region" : [ 0.43208644283811876, 1.0375279680411795, 0.43212609409216224, 1.0375640593228908, 1.999631707549517, 23.99963170754952 ]
+				},
+				"geometricError" : 0,
+				"refine" : "REPLACE",
+				"content" : {
+					"boundingVolume" : {
+						"region" : [ 0.43209326156406236, 1.0375279680411795, 0.43212609409216224, 1.0375577217616907, 1.999631707549517, 23.99963170754952 ]
+					},
+					"uri" : "data/data1.b3dm"
+				},
+				"children" : []
+			},
+			{
+				"boundingVolume" : {
+					"region" : [ 0.4321146596938401, 1.0374985135336625, 0.43215860120610805, 1.0375312864282766, 1.999631707549517, 23.99963170754952 ]
+				},
+				"geometricError" : 0,
+				"refine" : "REPLACE",
+				"content" : {
+					"boundingVolume" : {
+						"region" : [ 0.4321146596938401, 1.037502358081502, 0.4321458053128149, 1.037530378837163, 1.999631707549517, 23.99963170754952 ]
+					},
+					"uri" : "data/data2.b3dm"
+				},
+				"children" : []
+			},
+			{
+				"boundingVolume" : {
+					"region" : [ 0.43208644283811876, 1.0374985135336625, 0.4321225220221133, 1.0375312864282766, 1.999631707549517, 23.99963170754952 ]
+				},
+				"geometricError" : 0,
+				"refine" : "REPLACE",
+				"content" : {
+					"boundingVolume" : {
+						"region" : [ 0.43208644283811876, 1.0374985135336625, 0.4321118016562338, 1.037509072038964, 1.999631707549517, 23.99963170754952 ]
+					},
+					"uri" : "data/data3.b3dm"
+				},
+				"children" : []
+			}
+		]
+	}
+}
