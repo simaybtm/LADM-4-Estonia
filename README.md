@@ -7,6 +7,8 @@ Repository for the thesis "Leveraging BIM for the Registration of Spatial Plans 
 This project is licensed under the [MIT License](LICENSE). 
 Unless otherwise stated, all content in this repository is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
 
+## Credits 
+The pilot IFC datasets used in this research was developed by Christopher-Robin Raitviir and Martin Saarnak.
 
 ## Contact Information
 - **Email:** s.batum@student.tudelft.nl
