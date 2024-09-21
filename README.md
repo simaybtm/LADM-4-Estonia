@@ -7,6 +7,7 @@ This repository contains the necessary resources for the thesis, focusing on dev
 
 ## Repository Contents
 
+- **Research report**: The final research report detailing the methodology, case study, and findings.
 - **Database scripts**: SQL scripts for setting up the LADM-based database.
 - **FME workflows**: FME scripts for importing and managing IFC data.
 - **IFC datasets**: Example datasets used in the Estonia case study.
