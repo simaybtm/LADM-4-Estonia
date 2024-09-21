@@ -1,5 +1,5 @@
 # LADM-4-Estonia
-Repository for the thesis "Leveraging BIM/IFC for Spatial Plan Registration and Compliance Checks for Permitting in Estonia, based on LADM Part5: Spatial Plan Information" Contains database setup scripts, FME workflows, and related documentation.
+Repository for the thesis "Leveraging BIM/IFC for Spatial Plan Registration and Compliance Checks for Permitting in Estonia, based on LADM Part5: Spatial Plan Information". Contains database setup scripts, FME workflows, and related documentation.
 
 
 
