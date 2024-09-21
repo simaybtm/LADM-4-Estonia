@@ -25,8 +25,8 @@ The repository supports the case study detailed in the thesis, which involves ap
 
 This project is licensed under the [MIT License](LICENSE). 
 Unless otherwise stated, all content in this repository is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
-![Picture1](https://github.com/user-attachments/assets/5e2e8ca9-3d38-4f0c-8907-ae2ec2421cb6)
 
+<img src="https://github.com/user-attachments/assets/5e2e8ca9-3d38-4f0c-8907-ae2ec2421cb6" alt="UML Diagram Screenshot" width="600"/>
 
 ## Credits
 
