@@ -3,7 +3,10 @@
 
 ## Overview
 
-This repository contains the necessary resources for the thesis, focusing on developing a BIM/IFC-based compliance checking framework for spatial plans in Estonia. It leverages the ISO standard LADM Part 5 - Spatial Plan Information, providing a standardized approach for managing spatial data and performing compliance checks. The content includes database setup scripts, FME workflows, IFC datasets, and additional tools used in the research.
+This repository contains the necessary resources for the thesis, focusing on developing a BIM/IFC-based compliance checking framework for spatial plans in Estonia. It leverages the ISO standard LADM Part 5 - Spatial Plan Information, providing a standardized approach for managing spatial data and performing compliance checks. The content includes database setup scripts, FME workflows, IFC datasets, UML diagrams, and additional tools used in the research.
+
+The interactive UML diagram is live and available at:  
+[https://simaybtm.github.io/LADM-4-Estonia/Estonia_UML_Country_Profile.drawio.html](https://simaybtm.github.io/LADM-4-Estonia/Estonia_UML_Country_Profile.drawio.html)
 
 ## Repository Contents
 
@@ -11,6 +14,7 @@ This repository contains the necessary resources for the thesis, focusing on dev
 - **Database scripts**: SQL scripts for setting up the LADM-based database.
 - **FME workflows**: FME scripts for importing and managing IFC data.
 - **IFC datasets**: Example datasets used in the Estonia case study.
+- **UML diagrams**: Interactive UML diagram of Estonia’s LADM profile, available [here](https://simaybtm.github.io/LADM-4-Estonia/Estonia_UML_Country_Profile.drawio.html).
 - **Machine learning tools**: Scripts for performing additional spatial data analysis.
 
 ## Case Study
