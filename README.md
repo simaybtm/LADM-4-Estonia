@@ -40,3 +40,6 @@ For any questions or inquiries, feel free to reach out.
 - **Email:** s.batum@student.tudelft.nl
 - **Email:** simay@futureinsight.nl
 - **LinkedIn** https://www.linkedin.com/in/simaybatum/ 
+
+![Screenshot 2024-09-29 131554](https://github.com/user-attachments/assets/17aee9b2-238a-4ef6-9fb5-83ea321fe142)
+
