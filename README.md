@@ -17,6 +17,13 @@ The interactive UML diagram of the LADM Part 5 country profile is live and avail
 - **UML diagrams**: Interactive UML diagram of Estonia’s LADM profile, available [here](https://simaybtm.github.io/LADM-4-Estonia/Estonia_UML_Country_Profile.drawio.html).
 - **Machine learning tools**: Scripts for performing additional spatial data analysis.
 
+### Example Implementation Video (YouTube)
+
+[![Watch the video](https://img.youtube.com/vi/7VIOHF-enkY/0.jpg)](https://youtu.be/7VIOHF-enkY)
+
+This video demonstrates the process of uploading Detailed Plans to the Estonia LADM database in real-time.
+
+
 ## Case Study
 
 The repository supports the case study detailed in the thesis, which involves applying the framework to Estonia's spatial plan system. The system demonstrates how LADM Part 5 can be integrated with BIM and IFC to improve the efficiency and reliability of compliance checks for urban development projects.
