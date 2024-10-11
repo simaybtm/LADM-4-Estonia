@@ -1,5 +1,5 @@
 # LADM-4-Estonia
-**Repository for the thesis**: "Leveraging BIM/IFC for Spatial Plan Registration and Compliance Checks in Estonia, based on LADM Part 5: Spatial Plan Information."
+**Repository for the thesis**: "Spatial Plan Registration and Compliance Checks in Estonia, based on LADM Part 5: Spatial Plan Information."
 
 ## Overview
 
